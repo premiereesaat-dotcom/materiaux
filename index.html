@@ -1,0 +1,669 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Les 4 familles de matériaux</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Mise en page : tableau périodique des familles en ouverture (4 cases), puis une "planche" par famille : définition, sous-catégories, structure à manipuler. Fin : tri, symboles, récap, pièges, quiz. */
+:root{
+  --bg:#f2f4f5; --surface:#ffffff; --surface2:#e7ebee; --ink:#141d24; --muted:#56636e; --line:#d2d9df; --accent:#25506a;
+  --org:#3a8636; --met:#3b69a3; --min:#a06d14; --comp:#ad3770;
+  --good:#1f8a3a; --bad:#cc3333; --glow:#f2b705;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1418; --surface:#161e24; --surface2:#1f2930; --ink:#e5ebef; --muted:#9aa8b2; --line:#2b3741; --accent:#8cc3e3;
+  --org:#6cc466; --met:#84aee6; --min:#e2b45c; --comp:#ec7fb3;
+  --good:#5bd07a; --bad:#ff7b7b; --glow:#ffd24a; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f1418; --surface:#161e24; --surface2:#1f2930; --ink:#e5ebef; --muted:#9aa8b2; --line:#2b3741; --accent:#8cc3e3;
+  --org:#6cc466; --met:#84aee6; --min:#e2b45c; --comp:#ec7fb3;
+  --good:#5bd07a; --bad:#ff7b7b; --glow:#ffd24a; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1100px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.12;text-wrap:balance;margin:0}
+p{margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.mono{font-family:var(--f-mono)}
+.muted{color:var(--muted)}
+.small{font-size:15px}
+sub,sup{line-height:0}
+
+/* ===== Ouverture ===== */
+.top{padding-block:44px 28px;display:grid;gap:22px}
+.kicker{font-family:var(--f-mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.top h1{font-size:clamp(38px,7vw,74px);font-weight:800;letter-spacing:-.025em;line-height:1}
+.top h1 .w1{color:var(--org)} .top h1 .w2{color:var(--met)} .top h1 .w3{color:var(--min)} .top h1 .w4{color:var(--comp)}
+.top .intro{max-width:62ch;color:var(--muted);font-size:18px}
+.ptable{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:820px){.ptable{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cell{position:relative;display:grid;grid-template-rows:auto 1fr auto;gap:6px;text-decoration:none;color:var(--ink);background:var(--surface);
+  border:2px solid var(--f);border-radius:18px;padding:14px 16px 16px;min-height:220px;transition:transform .2s, box-shadow .2s}
+.cell:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px var(--f)}
+.cell .no{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.cell .glyph{font-family:var(--f-display);font-weight:800;font-size:clamp(46px,6vw,64px);color:var(--f);line-height:1;align-self:center}
+.cell .glyph sub{font-size:.45em}
+.cell h2{font-size:22px}
+.cell .subs{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.cell .subs span{font-size:12px;padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--f) 14%,var(--surface));font-weight:700}
+
+nav.chips{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);margin-inline:calc(-1 * max(16px, env(safe-area-inset-left, 0px)));padding:9px max(16px, env(safe-area-inset-left, 0px))}
+nav.chips .row{max-width:1100px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+nav.chips a{flex:none;display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:var(--ink);font-size:14px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);white-space:nowrap}
+nav.chips a i{width:10px;height:10px;border-radius:3px;background:var(--f,var(--accent))}
+nav.chips a:hover{border-color:var(--f,var(--accent))}
+
+main{display:grid;gap:72px;padding-block:40px 64px}
+section{display:grid;gap:22px;scroll-margin-top:70px}
+
+/* ===== Planche famille ===== */
+.fhead{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:end;padding-bottom:16px;border-bottom:4px solid var(--f)}
+.fhead .tile{width:96px;height:96px;border-radius:20px;background:var(--f);color:var(--surface);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:40px;position:relative}
+.fhead .tile small{position:absolute;top:6px;left:9px;font-family:var(--f-mono);font-size:12px;font-weight:600;opacity:.85}
+.fhead .tile sub{font-size:.5em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--f,var(--accent));font-weight:600}
+.fhead h2{font-size:clamp(30px,5vw,48px);font-weight:800;letter-spacing:-.015em}
+.def{font-size:19px;line-height:1.6;max-width:70ch;padding:16px 20px;background:var(--surface);border-radius:14px;border-left:6px solid var(--f)}
+.def .lbl{display:block;font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--f);font-weight:600;margin-bottom:4px}
+.kw{background:color-mix(in srgb,var(--f) 20%,transparent);padding:0 4px;border-radius:4px;font-weight:700}
+.subs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.sub{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--f);border-radius:14px;padding:14px 16px;display:grid;gap:8px;align-content:start}
+.sub h3{font-size:21px}
+.sub .ex{display:flex;flex-wrap:wrap;gap:6px}
+.sub .ex span{font-size:14px;padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--f) 45%,var(--line));background:color-mix(in srgb,var(--f) 7%,var(--surface))}
+.sub .ex b{font-family:var(--f-mono);color:var(--f)}
+.traits{display:flex;flex-wrap:wrap;gap:8px}
+.traits span{font-size:14px;font-weight:700;padding:4px 12px;border-radius:8px;background:var(--surface2)}
+.traits span::before{content:"→ ";color:var(--f)}
+
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:14px}
+.lab-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center}
+.lab-head h3{font-size:21px;display:flex;align-items:center;gap:10px}
+.lab-head h3::before{content:"";width:12px;height:12px;border-radius:3px;background:var(--f);transform:rotate(45deg)}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:center}
+@media (max-width:760px){.lab-grid{grid-template-columns:minmax(0,1fr)}}
+.stage{background:var(--surface2);border-radius:14px;overflow:hidden}
+.stage svg,.stage canvas{display:block;width:100%;height:auto}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.btns button,.seg button{border:1px solid var(--line);background:var(--surface2);border-radius:999px;padding:6px 13px;font-size:14px;cursor:pointer}
+.btns button:hover{border-color:var(--f)}
+.btns button[aria-pressed="true"]{background:var(--f);color:var(--surface);border-color:var(--f)}
+.act{border:none;background:var(--f);color:var(--surface);border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer}
+.act.ghost{background:transparent;color:var(--f);border:2px solid var(--f)}
+.readout{display:grid;gap:8px;padding:14px 16px;border-radius:12px;background:color-mix(in srgb,var(--f) 9%,var(--surface))}
+.readout .big{font-family:var(--f-display);font-weight:800;font-size:26px;color:var(--f)}
+input[type=range]{width:100%;accent-color:var(--f)}
+.svg-ink{fill:var(--ink)} .svg-mu{fill:var(--muted)}
+
+/* procédés */
+.proc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.proc{grid-template-columns:minmax(0,1fr)}}
+.proc .col{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px;align-content:start}
+.proc h4{font-size:18px;color:var(--f)}
+.proc ol{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.proc li{display:grid;grid-template-columns:28px 1fr;gap:8px;font-size:15px}
+.proc li b{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:color-mix(in srgb,var(--f) 18%,var(--surface));font-family:var(--f-mono);font-size:12px;color:var(--f)}
+.flag{font-size:13px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--surface2);justify-self:start}
+
+/* composite builder */
+.pickers{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media (max-width:480px){.pickers{grid-template-columns:minmax(0,1fr)}}
+.picker{display:grid;gap:6px}
+.picker > span{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.picker .btns{flex-direction:column;align-items:stretch}
+.picker .btns button{text-align:left;border-radius:10px}
+
+/* ===== Récap ===== */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:780px;font-size:15px}
+th,td{padding:11px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface2)}
+td.fam{font-family:var(--f-display);font-weight:800;font-size:18px;color:var(--f);border-left:6px solid var(--f);white-space:nowrap}
+td.sc{font-weight:700;white-space:nowrap}
+tr.first td{border-top:2px solid var(--line)}
+.reveal{border:1px dashed var(--muted);background:var(--surface2);border-radius:8px;padding:2px 10px;cursor:pointer;font-family:var(--f-mono);color:var(--muted)}
+.tools{display:flex;flex-wrap:wrap;gap:10px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--surface);border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:700;font-size:15px}
+.btn.ghost{background:transparent;color:var(--accent)}
+.shead{display:grid;gap:6px;padding-bottom:12px;border-bottom:3px solid var(--accent)}
+.shead h2{font-size:clamp(28px,4.5vw,40px);font-weight:800}
+.shead p{max-width:68ch;color:var(--muted)}
+
+/* ===== Tri ===== */
+.sort{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:16px}
+.sort-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;font-family:var(--f-mono)}
+.progress{height:8px;border-radius:4px;background:var(--surface2);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.card-mat{justify-self:center;text-align:center;padding:18px 28px;border-radius:16px;border:2px dashed var(--line);display:grid;gap:4px;min-width:min(320px,100%)}
+.card-mat .nm{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,5vw,40px)}
+.bins{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.bins{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.bin{border:2px solid var(--f);border-radius:14px;padding:10px;display:grid;gap:6px;align-content:start}
+.bin h4{font-size:16px;color:var(--f)}
+.bin button{border:1px solid color-mix(in srgb,var(--f) 40%,var(--line));background:color-mix(in srgb,var(--f) 8%,var(--surface));border-radius:10px;padding:7px 10px;cursor:pointer;text-align:left;font-size:14px;font-weight:700}
+.bin button:hover:not(:disabled){background:color-mix(in srgb,var(--f) 22%,var(--surface))}
+.bin button.ok{background:var(--good);color:var(--surface);border-color:var(--good)}
+.bin button.ko{background:var(--bad);color:var(--surface);border-color:var(--bad)}
+.bin button.hint{outline:3px solid var(--good);outline-offset:1px}
+.fbk{border-radius:12px;padding:12px 14px;background:var(--surface2);min-height:52px}
+.fbk.ok{background:color-mix(in srgb,var(--good) 14%,var(--surface))}
+.fbk.ko{background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
+
+/* ===== Symboles ===== */
+.flips{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.flip{perspective:600px;border:none;background:none;padding:0;cursor:pointer;height:120px}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .fa,.flip .fb{position:absolute;inset:0;border-radius:14px;display:grid;place-items:center;backface-visibility:hidden;padding:8px;text-align:center}
+.flip .fa{background:var(--surface);border:2px solid var(--f);font-family:var(--f-display);font-weight:800;font-size:38px;color:var(--f)}
+.flip .fa small{position:absolute;top:6px;left:9px;font-family:var(--f-mono);font-size:11px;color:var(--muted);font-weight:400}
+.flip .fb{background:var(--f);color:var(--surface);transform:rotateY(180deg);font-weight:700;font-size:15px;line-height:1.3}
+
+/* ===== Pièges ===== */
+.traps{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.trap{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:6px;align-content:start;border-top:5px solid var(--f,var(--bad))}
+.trap h3{font-size:19px}
+
+/* ===== Quiz ===== */
+.qhead{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.score{font-family:var(--f-mono);font-size:18px;font-weight:600}
+.qlist{display:grid;gap:12px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:10px}
+.q .qt{font-weight:700}
+.q .qt span{font-family:var(--f-mono);color:var(--muted);font-weight:400;margin-right:6px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--surface2);border-radius:10px;padding:9px 12px;cursor:pointer}
+.opts button:hover:not(:disabled){border-color:var(--accent)}
+.opts button.ok{background:color-mix(in srgb,var(--good) 18%,var(--surface));border-color:var(--good);font-weight:700}
+.opts button.ko{background:color-mix(in srgb,var(--bad) 15%,var(--surface));border-color:var(--bad)}
+.opts button:disabled{cursor:default}
+.expl{font-size:15px;color:var(--muted)}
+footer{padding-block:24px 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <p class="kicker">Révision avant le DS · Physique-Chimie STD2A</p>
+    <h1><span class="w1">Les</span> <span class="w2">4 familles</span> <span class="w3">de</span> <span class="w4">matériaux</span></h1>
+    <p class="intro">Tous les matériaux d'un objet de design se rangent dans quatre familles. Chaque famille se reconnaît à la façon dont ses atomes sont liés et rangés. Clique sur une famille pour l'explorer.</p>
+    <div class="ptable">
+      <a class="cell" href="#organiques" style="--f:var(--org)"><span class="no"><span>1</span><span>carbone</span></span><span class="glyph">C</span><div><h2>Organiques</h2><div class="subs"><span>Naturels</span><span>Synthétiques</span></div></div></a>
+      <a class="cell" href="#metaux" style="--f:var(--met)"><span class="no"><span>2</span><span>liaison métallique</span></span><span class="glyph">e⁻</span><div><h2>Métaux</h2><div class="subs"><span>Purs</span><span>Alliages</span></div></div></a>
+      <a class="cell" href="#mineraux" style="--f:var(--min)"><span class="no"><span>3</span><span>origine géologique</span></span><span class="glyph">SiO<sub>2</sub></span><div><h2>Minéraux</h2><div class="subs"><span>Roches</span><span>Céramiques</span><span>Verres</span></div></div></a>
+      <a class="cell" href="#composites" style="--f:var(--comp)"><span class="no"><span>4</span><span>matrice + renfort</span></span><span class="glyph">M+R</span><div><h2>Composites</h2><div class="subs"><span>Naturels</span><span>Synthétiques</span></div></div></a>
+    </div>
+  </header>
+
+  <nav class="chips" aria-label="Sommaire">
+    <div class="row">
+      <a href="#organiques" style="--f:var(--org)"><i></i>Organiques</a>
+      <a href="#metaux" style="--f:var(--met)"><i></i>Métaux</a>
+      <a href="#mineraux" style="--f:var(--min)"><i></i>Minéraux</a>
+      <a href="#composites" style="--f:var(--comp)"><i></i>Composites</a>
+      <a href="#tri"><i></i>Jeu de tri</a>
+      <a href="#symboles"><i></i>Symboles</a>
+      <a href="#recap"><i></i>Récap</a>
+      <a href="#pieges"><i></i>Pièges</a>
+      <a href="#quiz"><i></i>Quiz</a>
+    </div>
+  </nav>
+
+  <main>
+  <!-- ================= ORGANIQUES ================= -->
+  <section id="organiques" style="--f:var(--org)">
+    <div class="fhead"><div class="tile"><small>1</small>C</div><div><p class="eyebrow">Famille 1 · aussi appelés polymères</p><h2>Les matériaux organiques</h2></div></div>
+    <p class="def"><span class="lbl">Définition</span>Matériaux dont la structure chimique repose sur l'<span class="kw">atome de carbone</span>, généralement associé à l'hydrogène, l'oxygène ou l'azote. Ils sont issus <span class="kw">du vivant</span> (faune et flore) ou de la <span class="kw">transformation du pétrole</span>.</p>
+    <div class="subs-grid">
+      <div class="sub"><h3>Naturels</h3><p>Issus du monde vivant, animal ou végétal. Majoritairement composés de carbone <b class="mono">C</b>, d'hydrogène <b class="mono">H</b> et d'oxygène <b class="mono">O</b>.</p>
+        <div class="ex"><span>bois</span><span>coton</span><span>laine</span><span>galalithe</span></div></div>
+      <div class="sub"><h3>Synthétiques</h3><p>Créés par l'Homme par des réactions de <b>polymérisation</b>, souvent à partir du pétrole : on dit qu'ils sont <b>pétrosourcés</b>.</p>
+        <div class="ex"><span><b>PVC</b> polychlorure de vinyle</span><span><b>PMMA</b> polyméthacrylate de méthyle (Plexiglas)</span><span>Nylon</span></div></div>
+    </div>
+    <div class="traits"><span>souvent légers</span><span>isolants thermiques et électriques</span><span>sensibles à la chaleur</span></div>
+    <div class="lab">
+      <div class="lab-head"><h3>La polymérisation : des petites molécules qui s'enchaînent</h3>
+        <div class="btns"><button type="button" class="act" id="poly-go">Polymériser</button><button type="button" class="act ghost" id="poly-reset">Séparer</button></div></div>
+      <div class="lab-grid">
+        <div class="stage"><svg id="poly" viewBox="0 0 560 230" role="img" aria-label="Monomères qui se lient en une chaîne de polymère"></svg></div>
+        <div class="readout" aria-live="polite">
+          <span class="big" id="poly-state">8 monomères séparés</span>
+          <span id="poly-txt">Chaque petite molécule (un <b>monomère</b>) contient deux atomes de carbone reliés par une double liaison.</span>
+          <span class="small muted"><b>poly</b> = plusieurs, <b>mère</b> = partie. Un polymère est une très longue chaîne faite de milliers de monomères identiques, avec un squelette d'atomes de carbone.</span>
+        </div>
+      </div>
+      <p class="small muted">Légende : <b style="color:var(--org)">●</b> carbone C · <b style="color:var(--muted)">●</b> hydrogène H</p>
+    </div>
+  </section>
+
+  <!-- ================= MÉTAUX ================= -->
+  <section id="metaux" style="--f:var(--met)">
+    <div class="fhead"><div class="tile"><small>2</small>e⁻</div><div><p class="eyebrow">Famille 2 · liaison métallique</p><h2>Les métaux</h2></div></div>
+    <p class="def"><span class="lbl">Définition</span>Matériaux composés exclusivement d'<span class="kw">atomes métalliques</span> reliés par une <span class="kw">liaison métallique</span> : les électrons extérieurs bougent librement entre les atomes et forment une « <span class="kw">mer d'électrons</span> ». Leur structure est entièrement <b>cristalline</b> : les atomes sont empilés de manière très ordonnée, compacte et régulière.</p>
+    <div class="subs-grid">
+      <div class="sub"><h3>Métaux purs</h3><p>Constitués d'un seul type d'atome.</p>
+        <div class="ex"><span>cuivre <b>Cu</b></span><span>fer <b>Fe</b></span><span>aluminium <b>Al</b></span></div></div>
+      <div class="sub"><h3>Alliages</h3><p>Mélanges homogènes de plusieurs métaux, ou d'un métal et d'un non-métal.</p>
+        <div class="ex"><span>acier = <b>Fe</b> + <b>C</b></span><span>bronze = <b>Cu</b> + <b>Sn</b></span><span>laiton = <b>Cu</b> + <b>Zn</b></span></div></div>
+    </div>
+    <div class="traits"><span>conducteurs d'électricité et de chaleur</span><span>souvent lourds</span><span>se déforment avant de casser</span></div>
+    <div class="lab">
+      <div class="lab-head"><h3>Au cœur du métal : les ions et la mer d'électrons</h3>
+        <button type="button" class="act" id="met-pile" aria-pressed="false">Brancher une pile</button></div>
+      <div class="btns" id="met-btns"></div>
+      <div class="lab-grid">
+        <div class="stage"><canvas id="metal" width="560" height="320" aria-label="Réseau d'atomes métalliques avec électrons libres"></canvas></div>
+        <div class="readout" aria-live="polite">
+          <span class="big" id="met-name"></span>
+          <span id="met-txt"></span>
+          <span class="small muted" id="met-pile-txt">Les petits points sont les électrons libres : ils circulent entre les atomes dans tous les sens.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MINÉRAUX ================= -->
+  <section id="mineraux" style="--f:var(--min)">
+    <div class="fhead"><div class="tile"><small>3</small>SiO<sub>2</sub></div><div><p class="eyebrow">Famille 3 · roches, céramiques, verres</p><h2>Les minéraux</h2></div></div>
+    <p class="def"><span class="lbl">Définition</span>Matériaux d'<span class="kw">origine géologique</span> (issus de la Terre), composés d'<span class="kw">atomes métalliques et non métalliques</span> liés ensemble. Ils sont généralement <b>très durs, rigides, résistants à la chaleur</b>, mais <span class="kw">fragiles</span> : ils cassent sans se déformer.</p>
+    <div class="subs-grid">
+      <div class="sub"><h3>Roches</h3><p>Utilisées directement après extraction et taille, sans transformation chimique lourde.</p>
+        <div class="ex"><span>granit</span><span>marbre</span><span>calcaire</span><span>ardoise</span><span>basalte</span></div></div>
+      <div class="sub"><h3>Céramiques</h3><p>Matières dures et <b>cristallines</b> (atomes rangés de façon très ordonnée), obtenues par <b>cuisson</b> de silicates et d'argiles à haute température.</p>
+        <div class="ex"><span>grès</span><span>porcelaine</span><span>faïence</span></div></div>
+      <div class="sub"><h3>Verres</h3><p>Solides <b>non cristallins</b>, dits <b>amorphes</b>. Silice (sable) fondue à <b>1 500 °C</b> avec d'autres minéraux, puis refroidie très vite pour ne pas avoir le temps de cristalliser.</p>
+        <div class="ex"><span>verre minéral</span><span>cristal (verre + <b>PbO</b>)</span></div></div>
+    </div>
+    <div class="lab">
+      <div class="lab-head"><h3>Cristallin ou amorphe ? Tout dépend du refroidissement</h3></div>
+      <div class="lab-grid">
+        <div class="stage"><svg id="cryst" viewBox="0 0 520 300" role="img" aria-label="Arrangement des atomes selon la vitesse de refroidissement"></svg></div>
+        <div style="display:grid;gap:14px">
+          <label for="cool" style="display:grid;gap:6px;font-size:15px"><span>Vitesse de refroidissement</span><input id="cool" type="range" min="0" max="100" value="0"><span class="mono small" style="display:flex;justify-content:space-between"><span>lent</span><span>très rapide</span></span></label>
+          <div class="readout" aria-live="polite"><span class="big" id="cool-name"></span><span id="cool-txt"></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="proc">
+      <div class="col"><h4>Roche</h4><span class="flag">pas de transformation chimique lourde</span><ol><li><b>1</b>Extraction en carrière</li><li><b>2</b>Découpe et taille</li><li><b>3</b>Finition de surface (poli, flammé, bouchardé…)</li></ol></div>
+      <div class="col"><h4>Céramique</h4><span class="flag">cristalline</span><ol><li><b>1</b>Argile et silicates mélangés à l'eau</li><li><b>2</b>Mise en forme et séchage</li><li><b>3</b>Cuisson à haute température</li></ol></div>
+      <div class="col"><h4>Verre</h4><span class="flag">amorphe</span><ol><li><b>1</b>Sable (silice) + autres minéraux</li><li><b>2</b>Fusion à 1 500 °C</li><li><b>3</b>Refroidissement très rapide : pas le temps de cristalliser</li></ol></div>
+    </div>
+  </section>
+
+  <!-- ================= COMPOSITES ================= -->
+  <section id="composites" style="--f:var(--comp)">
+    <div class="fhead"><div class="tile"><small>4</small>M+R</div><div><p class="eyebrow">Famille 4 · le meilleur de deux familles</p><h2>Les composites</h2></div></div>
+    <p class="def"><span class="lbl">Définition</span>Matériaux <span class="kw">hétérogènes</span> (non miscibles : les constituants ne se mélangent pas) qui associent <span class="kw">une matrice</span>, le liant continu, et <span class="kw">un renfort</span>, l'armature fibreuse, pour combiner les propriétés mécaniques de deux familles différentes.</p>
+    <div class="subs-grid">
+      <div class="sub"><h3>Naturels : les composites du vivant</h3><p>La nature utilise cette stratégie à l'échelle microscopique.</p>
+        <div class="ex"><span><b>bois</b> = lignine + cellulose</span><span><b>os</b> = collagène + phosphate de calcium</span></div>
+        <p class="small muted">Dans le bois, la lignine résiste à la compression et les fibres de cellulose résistent à la traction.</p></div>
+      <div class="sub"><h3>Synthétiques : façonnés par l'Homme</h3><p>On assemble volontairement une matrice et un renfort.</p>
+        <div class="ex"><span><b>torchis</b> = argile + paille</span><span><b>béton armé</b> = béton + barres d'acier</span><span><b>fibre de carbone</b> = résine époxyde + fils de carbone tissés</span></div></div>
+    </div>
+    <div class="lab">
+      <div class="lab-head"><h3>Atelier : assemble une matrice et un renfort</h3></div>
+      <div class="lab-grid">
+        <div style="display:grid;gap:14px">
+          <div class="pickers">
+            <div class="picker"><span>Matrice (le liant)</span><div class="btns" id="mx"></div></div>
+            <div class="picker"><span>Renfort (l'armature)</span><div class="btns" id="rf"></div></div>
+          </div>
+        </div>
+        <div style="display:grid;gap:12px">
+          <div class="stage"><svg id="compo" viewBox="0 0 360 200" role="img" aria-label="Coupe du composite : matrice et renfort"></svg></div>
+          <div class="readout" aria-live="polite"><span class="big" id="co-name"></span><span id="co-txt"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRI ================= -->
+  <section id="tri">
+    <div class="shead"><p class="eyebrow">Jeu</p><h2>Range chaque matériau dans sa case</h2><p>Un matériau s'affiche : choisis sa famille et sa sous-catégorie. Si tu te trompes, la bonne case s'allume.</p></div>
+    <div class="sort">
+      <div class="sort-top"><span id="s-count"></span><span id="s-score"></span></div>
+      <div class="progress"><i id="s-prog" style="width:0"></i></div>
+      <div class="card-mat"><span class="muted small">Ce matériau est…</span><span class="nm" id="s-mat"></span><span class="muted small" id="s-sub"></span></div>
+      <div class="bins" id="bins"></div>
+      <div class="fbk" id="s-fb" aria-live="polite">Clique sur une sous-catégorie.</div>
+      <div class="tools"><button type="button" class="btn" id="s-next" hidden>Matériau suivant</button><button type="button" class="btn ghost" id="s-restart">Recommencer</button></div>
+    </div>
+  </section>
+
+  <!-- ================= SYMBOLES ================= -->
+  <section id="symboles">
+    <div class="shead"><p class="eyebrow">À connaître par cœur</p><h2>Symboles et sigles du cours</h2><p>Retrouve le nom de tête, puis retourne la carte pour vérifier.</p></div>
+    <div class="tools"><button type="button" class="btn ghost" id="flip-all">Tout retourner</button></div>
+    <div class="flips" id="flips"></div>
+  </section>
+
+  <!-- ================= RÉCAP ================= -->
+  <section id="recap">
+    <div class="shead"><p class="eyebrow">Fiche de synthèse</p><h2>Les 4 familles en un tableau</h2><p>Active le mode entraînement pour cacher les définitions et les exemples, retrouve-les, puis clique sur les « ? ».</p></div>
+    <div class="tools"><button type="button" class="btn" id="r-train">Mode entraînement : cacher les réponses</button><button type="button" class="btn ghost" id="r-all" hidden>Tout révéler</button></div>
+    <div class="tbl-wrap"><table id="rtbl"><thead><tr><th>Famille</th><th>Sous-catégorie</th><th>Ce qui la caractérise</th><th>Exemples</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <!-- ================= PIÈGES ================= -->
+  <section id="pieges">
+    <div class="shead"><p class="eyebrow">Les erreurs classiques</p><h2>Pièges à éviter</h2></div>
+    <div class="traps">
+      <div class="trap" style="--f:var(--min)"><h3>Le cristal n'est pas cristallin</h3><p>Malgré son nom, le cristal est un <b>verre</b>, donc <b>amorphe</b>. Il est simplement enrichi en oxyde de plomb (PbO).</p></div>
+      <div class="trap" style="--f:var(--org)"><h3>Le Plexiglas n'est pas du verre</h3><p>Il est transparent, mais le PMMA est un <b>organique synthétique</b> (un plastique), pas un minéral.</p></div>
+      <div class="trap" style="--f:var(--comp)"><h3>Le bois a deux étiquettes</h3><p>C'est un <b>organique naturel</b> (il vient du vivant) et aussi un <b>composite naturel</b> (lignine + cellulose). Les deux réponses sont justes : précise celle que tu utilises.</p></div>
+      <div class="trap" style="--f:var(--met)"><h3>Un alliage peut contenir un non-métal</h3><p>L'acier = fer + <b>carbone</b>. Le carbone n'est pas un métal, et pourtant l'acier reste un alliage, donc un métal.</p></div>
+      <div class="trap" style="--f:var(--min)"><h3>Céramique ≠ verre</h3><p>Les deux sont des minéraux, mais la céramique est <b>cristalline</b> (cuite) alors que le verre est <b>amorphe</b> (fondu puis refroidi très vite).</p></div>
+      <div class="trap" style="--f:var(--comp)"><h3>Composite ≠ mélange</h3><p>Dans un alliage, les métaux se mélangent de façon <b>homogène</b>. Dans un composite, matrice et renfort restent <b>distincts</b> (hétérogène, non miscibles).</p></div>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz">
+    <div class="shead"><p class="eyebrow">Teste-toi</p><h2>Quiz de révision</h2></div>
+    <div class="qhead"><span class="score" id="q-score"></span><button type="button" class="btn ghost" id="q-reset">Recommencer</button></div>
+    <div class="qlist" id="q-list"></div>
+  </section>
+  </main>
+
+  <footer>Les schémas d'atomes sont simplifiés pour montrer l'idée (liaisons, ordre ou désordre), pas la forme réelle des molécules ou des cristaux.</footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function seeded(s){ return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; }
+
+/* ================= POLYMÈRE ================= */
+(() => {
+  const svg = $('poly'), N = 8, rnd = seeded(7);
+  const links = mk('g', {}, svg);
+  const monos = [];
+  for (let i = 0; i < N; i++) {
+    const free = { x: 30 + rnd() * 460, y: 30 + rnd() * 150, r: (rnd() - .5) * 70 };
+    const chain = { x: 22 + i * 66, y: i % 2 ? 128 : 104, r: 0 };
+    const g = mk('g', { style: 'transition:transform 1s cubic-bezier(.4,1.4,.5,1)' }, svg);
+    // H
+    [[6,-14],[6,14],[40,-14],[40,14]].forEach(([x,y]) => { mk('line', { x1: x < 20 ? 10 : 36, y1: 0, x2: x, y2: y, stroke: 'var(--muted)', 'stroke-width': 2 }, g); mk('circle', { cx: x, cy: y, r: 5, fill: 'var(--muted)' }, g); });
+    const d1 = mk('line', { x1: 10, y1: -3, x2: 36, y2: -3, stroke: 'var(--ink)', 'stroke-width': 2.5 }, g);
+    mk('line', { x1: 10, y1: 3, x2: 36, y2: 3, stroke: 'var(--ink)', 'stroke-width': 2.5 }, g);
+    mk('circle', { cx: 10, cy: 0, r: 9, fill: 'var(--org)' }, g); mk('circle', { cx: 36, cy: 0, r: 9, fill: 'var(--org)' }, g);
+    mk('text', { x: 10, y: 4, 'text-anchor': 'middle', 'font-size': 10, fill: 'var(--surface)', 'font-weight': 700 }, g).textContent = 'C';
+    mk('text', { x: 36, y: 4, 'text-anchor': 'middle', 'font-size': 10, fill: 'var(--surface)', 'font-weight': 700 }, g).textContent = 'C';
+    monos.push({ g, d1, free, chain });
+  }
+  for (let i = 0; i < N - 1; i++) {
+    const a = monos[i].chain, b = monos[i + 1].chain;
+    mk('line', { x1: a.x + 36, y1: a.y, x2: b.x + 10, y2: b.y, stroke: 'var(--org)', 'stroke-width': 4, opacity: 0, class: 'plink', style: 'transition:opacity .4s .9s' }, links);
+  }
+  function set(p){
+    monos.forEach(m => { const s = p ? m.chain : m.free; m.g.style.transform = `translate(${s.x}px,${s.y}px) rotate(${s.r}deg)`; m.d1.setAttribute('opacity', p ? 0 : 1); });
+    svg.querySelectorAll('.plink').forEach(l => l.setAttribute('opacity', p ? 1 : 0));
+    $('poly-state').textContent = p ? '1 polymère : une longue chaîne' : '8 monomères séparés';
+    $('poly-txt').innerHTML = p ? 'Les doubles liaisons se sont ouvertes : chaque monomère s\'accroche à ses voisins. Le <b>squelette de carbone</b> forme une chaîne. Le polyéthylène des sacs plastiques est fait exactement comme ça.'
+                                : 'Chaque petite molécule (un <b>monomère</b>) contient deux atomes de carbone reliés par une double liaison.';
+  }
+  $('poly-go').onclick = () => set(true); $('poly-reset').onclick = () => set(false); set(false);
+})();
+
+/* ================= MÉTAL ================= */
+(() => {
+  const M = [
+    { n: 'Cuivre', s: 'Cu', type: 'pur', t: 'Métal pur : un seul type d\'atome. Excellent conducteur, utilisé pour les fils électriques.' },
+    { n: 'Fer', s: 'Fe', type: 'pur', t: 'Métal pur : un seul type d\'atome. Rarement utilisé seul, il sert de base à l\'acier.' },
+    { n: 'Aluminium', s: 'Al', type: 'pur', t: 'Métal pur : un seul type d\'atome. Léger, utilisé en mobilier et en emballage.' },
+    { n: 'Acier', s: 'Fe', x: 'C', type: 'inter', t: 'Alliage de fer et de carbone. Les petits atomes de carbone se glissent entre les atomes de fer : c\'est un métal mélangé à un non-métal.' },
+    { n: 'Bronze', s: 'Cu', x: 'Sn', type: 'sub', p: .18, t: 'Alliage de cuivre et d\'étain. Des atomes d\'étain, plus gros, prennent la place de certains atomes de cuivre.' },
+    { n: 'Laiton', s: 'Cu', x: 'Zn', type: 'sub', p: .32, t: 'Alliage de cuivre et de zinc. Des atomes de zinc remplacent une partie des atomes de cuivre.' }];
+  const cv = $('metal'), ctx = cv.getContext('2d');
+  const W = 560, H = 320, cols = 10, rows = 6, sx = 54, sy = 52, ox = 36, oy = 30;
+  let cur = 0, pile = false, colors = {};
+  const rnd = seeded(11);
+  const subMask = Array.from({ length: cols * rows }, () => rnd());
+  const electrons = Array.from({ length: 46 }, () => ({ x: rnd() * W, y: rnd() * H, vx: (rnd() - .5) * 1.6, vy: (rnd() - .5) * 1.6 }));
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = W * dpr; cv.height = H * dpr; ctx.scale(dpr, dpr);
+  function readColors(){ colors = { bg: css('--surface2'), met: css('--met'), alt: css('--min'), c: css('--ink'), e: css('--glow'), txt: css('--surface'), mu: css('--muted') }; }
+  readColors(); matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readColors);
+  new MutationObserver(readColors).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  function draw(){
+    const m = M[cur];
+    ctx.fillStyle = colors.bg; ctx.fillRect(0, 0, W, H);
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const i = r * cols + c, x = ox + c * sx + (r % 2 ? sx / 2 : 0), y = oy + r * sy;
+      if (x > W - 10) continue;
+      const isX = m.type === 'sub' && subMask[i] < m.p;
+      const rad = isX && m.x === 'Sn' ? 21 : 17;
+      ctx.beginPath(); ctx.arc(x, y, rad, 0, 7); ctx.fillStyle = isX ? colors.alt : colors.met; ctx.fill();
+      ctx.fillStyle = colors.txt; ctx.font = '700 12px ' + 'JetBrains Mono, monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(isX ? m.x : m.s, x, y + 1);
+    }
+    if (m.type === 'inter') {
+      for (let r = 0; r < rows - 1; r++) for (let c = 0; c < cols - 1; c++) {
+        if (subMask[r * cols + c] > .3) continue;
+        const x = ox + c * sx + sx / 2 + (r % 2 ? sx / 2 : 0), y = oy + r * sy + sy / 2;
+        if (x > W - 10) continue;
+        ctx.beginPath(); ctx.arc(x, y, 7, 0, 7); ctx.fillStyle = colors.c; ctx.fill();
+        ctx.fillStyle = colors.bg; ctx.font = '700 9px JetBrains Mono, monospace'; ctx.fillText('C', x, y + 1);
+      }
+    }
+    electrons.forEach(e => { ctx.beginPath(); ctx.arc(e.x, e.y, 3.2, 0, 7); ctx.fillStyle = colors.e; ctx.fill(); });
+    if (pile) { ctx.fillStyle = colors.c; ctx.font = '700 13px Atkinson Hyperlegible, sans-serif'; ctx.textAlign = 'left'; ctx.fillText('courant → les électrons avancent ensemble', 12, H - 12); }
+  }
+  function step(){
+    electrons.forEach(e => {
+      if (Math.random() < .04) { e.vx += (Math.random() - .5); e.vy += (Math.random() - .5); }
+      const sp = Math.hypot(e.vx, e.vy) || 1; e.vx = e.vx / sp * 1.3; e.vy = e.vy / sp * 1.3;
+      e.x += e.vx + (pile ? 1.8 : 0); e.y += e.vy;
+      if (e.x > W) e.x -= W; if (e.x < 0) e.x += W; if (e.y > H) e.y -= H; if (e.y < 0) e.y += H;
+    });
+    draw(); requestAnimationFrame(step);
+  }
+  function pick(i){
+    cur = i; $('met-btns').querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', k === i));
+    const m = M[i]; $('met-name').textContent = m.n + ' · ' + (m.type === 'pur' ? 'métal pur' : 'alliage');
+    $('met-txt').textContent = m.t; if (reduce) draw();
+  }
+  M.forEach((m, i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = m.n; b.onclick = () => pick(i); $('met-btns').appendChild(b); });
+  $('met-pile').onclick = () => {
+    pile = !pile; $('met-pile').setAttribute('aria-pressed', pile); $('met-pile').textContent = pile ? 'Débrancher la pile' : 'Brancher une pile';
+    $('met-pile-txt').textContent = pile ? 'Avec une pile, les électrons libres avancent tous dans le même sens : c\'est le courant électrique. Voilà pourquoi les métaux sont conducteurs.'
+                                         : 'Les petits points sont les électrons libres : ils circulent entre les atomes dans tous les sens.';
+    if (reduce) draw();
+  };
+  pick(0); if (reduce) draw(); else step();
+})();
+
+/* ================= CRISTALLIN / AMORPHE ================= */
+(() => {
+  const svg = $('cryst'), cols = 11, rows = 7, sx = 44, sy = 40, ox = 40, oy = 30, rnd = seeded(23);
+  const pts = []; for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) pts.push({ r, c, bx: ox + c * sx, by: oy + r * sy, jx: rnd() * 2 - 1, jy: rnd() * 2 - 1, big: (r + c) % 2 === 0 });
+  const gL = mk('g', {}, svg), gA = mk('g', {}, svg);
+  const lines = [];
+  pts.forEach((p, i) => {
+    if (p.c < cols - 1) lines.push([i, i + 1]);
+    if (p.r < rows - 1) lines.push([i, i + cols]);
+  });
+  const lEls = lines.map(() => mk('line', { stroke: 'var(--muted)', 'stroke-width': 1.5, opacity: .6 }, gL));
+  const aEls = pts.map(p => mk('circle', { r: p.big ? 10 : 6, fill: p.big ? 'var(--min)' : 'var(--ink)' }, gA));
+  function upd(){
+    const t = $('cool').value / 100;
+    const k = Math.pow(t, .8) * 19;
+    const pos = pts.map(p => [p.bx + p.jx * k, p.by + p.jy * k]);
+    aEls.forEach((e, i) => { e.setAttribute('cx', pos[i][0]); e.setAttribute('cy', pos[i][1]); });
+    lEls.forEach((e, i) => { const [a, b] = lines[i]; e.setAttribute('x1', pos[a][0]); e.setAttribute('y1', pos[a][1]); e.setAttribute('x2', pos[b][0]); e.setAttribute('y2', pos[b][1]); });
+    if (t < .3) { $('cool-name').textContent = 'Cristallin'; $('cool-txt').innerHTML = 'Refroidissement lent : les atomes ont le temps de se ranger en motifs réguliers. C\'est le cas des <b>céramiques</b> (et des métaux).'; }
+    else if (t < .7) { $('cool-name').textContent = 'De moins en moins ordonné'; $('cool-txt').textContent = 'Plus on refroidit vite, moins les atomes ont le temps de trouver leur place.'; }
+    else { $('cool-name').textContent = 'Amorphe'; $('cool-txt').innerHTML = 'Refroidissement très rapide : les atomes sont figés en désordre, comme dans un liquide. C\'est le <b>verre</b>.'; }
+  }
+  $('cool').addEventListener('input', upd); upd();
+})();
+
+/* ================= COMPOSITE ================= */
+(() => {
+  const MX = [{ k: 'argile', n: 'Argile', f: 'minéral', c: '#b78a5a' }, { k: 'beton', n: 'Béton', f: 'minéral', c: '#a3a7a8' }, { k: 'resine', n: 'Résine époxyde', f: 'organique synthétique', c: '#e3c766' }, { k: 'lignine', n: 'Lignine', f: 'organique naturel', c: '#c69a5f' }, { k: 'collagene', n: 'Collagène', f: 'organique naturel', c: '#e8cfc0' }];
+  const RF = [{ k: 'paille', n: 'Paille', f: 'organique naturel', c: '#e0bf4b' }, { k: 'acier', n: 'Barres d\'acier', f: 'métal', c: '#4f5b66' }, { k: 'carbone', n: 'Fils de carbone tissés', f: 'carbone', c: '#22272b' }, { k: 'cellulose', n: 'Fibres de cellulose', f: 'organique naturel', c: '#f3ead2' }, { k: 'phosphate', n: 'Phosphate de calcium', f: 'minéral', c: '#f8f6f0' }];
+  const KNOWN = {
+    'argile+paille': ['Torchis', 'synthétique', 'Composite historique des maisons à colombages. L\'argile lie l\'ensemble, la paille l\'empêche de se fissurer en séchant.'],
+    'beton+acier': ['Béton armé', 'synthétique', 'Le béton résiste à la compression, les barres d\'acier reprennent la traction.'],
+    'resine+carbone': ['Fibre de carbone', 'synthétique', 'Très léger et très rigide : vélos, raquettes, mobilier haut de gamme. Coûteux à fabriquer.'],
+    'lignine+cellulose': ['Bois', 'naturel', 'La lignine résiste à la compression, les fibres de cellulose résistent à la traction. Le bois est plus solide dans le sens des fibres.'],
+    'collagene+phosphate': ['Os', 'naturel', 'Le collagène apporte la souplesse, le phosphate de calcium (minéral) la dureté.']};
+  let mi = 1, ri = 1;
+  function btn(list, el, cb){ list.forEach((m, i) => { const b = document.createElement('button'); b.type = 'button'; b.innerHTML = `${m.n} <span class="muted small">· ${m.f}</span>`; b.onclick = () => cb(i); el.appendChild(b); }); }
+  btn(MX, $('mx'), i => { mi = i; upd(); }); btn(RF, $('rf'), i => { ri = i; upd(); });
+  function draw(m, r){
+    const s = $('compo'); s.innerHTML = '';
+    mk('rect', { x: 10, y: 10, width: 340, height: 180, rx: 10, fill: m.c }, s);
+    const rnd = seeded(5);
+    if (r.k === 'paille') for (let i = 0; i < 40; i++) { const x = 20 + rnd() * 300, y = 20 + rnd() * 160, a = rnd() * 3.14, l = 20 + rnd() * 25; mk('line', { x1: x, y1: y, x2: x + Math.cos(a) * l, y2: y + Math.sin(a) * l, stroke: r.c, 'stroke-width': 3, 'stroke-linecap': 'round' }, s); }
+    if (r.k === 'acier') [55, 100, 145].forEach(y => { mk('rect', { x: 20, y: y - 6, width: 320, height: 12, rx: 6, fill: r.c }, s); for (let x = 30; x < 340; x += 16) mk('line', { x1: x, y1: y - 6, x2: x + 6, y2: y + 6, stroke: m.c, 'stroke-width': 1.5, opacity: .6 }, s); });
+    if (r.k === 'carbone') { for (let y = 25; y < 180; y += 14) mk('line', { x1: 15, y1: y, x2: 345, y2: y, stroke: r.c, 'stroke-width': 4 }, s); for (let x = 25; x < 345; x += 14) mk('line', { x1: x, y1: 15, x2: x, y2: 185, stroke: r.c, 'stroke-width': 4, opacity: .7 }, s); }
+    if (r.k === 'cellulose') for (let y = 22; y < 185; y += 9) { let d = `M15 ${y}`; for (let x = 15; x <= 345; x += 30) d += ` Q ${x + 15} ${y + (rnd() - .5) * 6} ${x + 30} ${y}`; mk('path', { d, fill: 'none', stroke: r.c, 'stroke-width': 3 }, s); }
+    if (r.k === 'phosphate') for (let i = 0; i < 90; i++) { const x = 20 + rnd() * 320, y = 20 + rnd() * 160; mk('rect', { x, y, width: 7, height: 4, fill: r.c, stroke: '#00000033', transform: `rotate(${rnd() * 180} ${x} ${y})` }, s); }
+    mk('rect', { x: 10, y: 10, width: 340, height: 180, rx: 10, fill: 'none', stroke: 'var(--ink)', 'stroke-width': 1.5 }, s);
+  }
+  function upd(){
+    $('mx').querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', k === mi));
+    $('rf').querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', k === ri));
+    const m = MX[mi], r = RF[ri], kn = KNOWN[m.k + '+' + r.k];
+    draw(m, r);
+    if (kn) { $('co-name').textContent = `${kn[0]} · composite ${kn[1]}`; $('co-txt').innerHTML = `<b>Matrice</b> : ${m.n.toLowerCase()} (${m.f}) · <b>Renfort</b> : ${r.n.toLowerCase()} (${r.f}).<br>${kn[2]}`; }
+    else { $('co-name').textContent = 'Combinaison non vue en cours'; $('co-txt').innerHTML = `Ce mélange ${m.n.toLowerCase()} + ${r.n.toLowerCase()} n'est pas un des exemples du cours. Essaie de retrouver les cinq composites : <b>torchis, béton armé, fibre de carbone, bois, os</b>.`; }
+  }
+  upd();
+})();
+
+/* ================= TRI ================= */
+const BINS = [
+  { f: 'org', n: 'Organiques', s: [['org-nat', 'Naturels'], ['org-syn', 'Synthétiques']] },
+  { f: 'met', n: 'Métaux', s: [['met-pur', 'Purs'], ['met-all', 'Alliages']] },
+  { f: 'min', n: 'Minéraux', s: [['min-roc', 'Roches'], ['min-cer', 'Céramiques'], ['min-ver', 'Verres']] },
+  { f: 'comp', n: 'Composites', s: [['comp-nat', 'Naturels'], ['comp-syn', 'Synthétiques']] }];
+const MATS = [
+  ['Bois', ['org-nat', 'comp-nat'], 'Les deux sont justes : organique naturel (issu du vivant) et composite naturel (lignine + cellulose).'],
+  ['Coton', ['org-nat'], 'Fibre végétale, issue du vivant.'], ['Laine', ['org-nat'], 'Fibre animale, issue du vivant.'], ['Galalithe', ['org-nat'], 'Classée dans les organiques naturels dans le cours : elle est fabriquée à partir de la caséine du lait.'],
+  ['PVC', ['org-syn'], 'Polychlorure de vinyle : polymère issu de la pétrochimie.'], ['PMMA (Plexiglas)', ['org-syn'], 'Transparent comme le verre, mais c\'est un plastique : organique synthétique.'], ['Nylon', ['org-syn'], 'Polymère synthétique, pétrosourcé.'],
+  ['Cuivre', ['met-pur'], 'Un seul type d\'atome : Cu.'], ['Fer', ['met-pur'], 'Un seul type d\'atome : Fe.'], ['Aluminium', ['met-pur'], 'Un seul type d\'atome : Al.'],
+  ['Acier', ['met-all'], 'Fer (Fe) + carbone (C) : un métal et un non-métal.'], ['Bronze', ['met-all'], 'Cuivre (Cu) + étain (Sn).'], ['Laiton', ['met-all'], 'Cuivre (Cu) + zinc (Zn).'],
+  ['Granit', ['min-roc'], 'Extrait puis taillé, sans transformation chimique.'], ['Marbre', ['min-roc'], 'Roche extraite et taillée.'], ['Ardoise', ['min-roc'], 'Roche qui se débite en feuilles, utilisée en toiture.'], ['Basalte', ['min-roc'], 'Roche volcanique.'], ['Calcaire', ['min-roc'], 'Roche sédimentaire, pierre de construction.'],
+  ['Grès', ['min-cer'], 'Argile cuite à haute température : céramique.'], ['Porcelaine', ['min-cer'], 'Céramique fine cuite à très haute température.'], ['Faïence', ['min-cer'], 'Céramique émaillée.'],
+  ['Verre minéral', ['min-ver'], 'Silice fondue puis refroidie très vite : amorphe.'], ['Cristal', ['min-ver'], 'Piège : c\'est un verre (amorphe) enrichi en oxyde de plomb PbO.'],
+  ['Os', ['comp-nat'], 'Collagène (matrice) + phosphate de calcium (renfort).'], ['Torchis', ['comp-syn'], 'Argile (matrice) + paille (renfort), façonné par l\'Homme.'], ['Béton armé', ['comp-syn'], 'Béton (matrice) + barres d\'acier (renfort).'], ['Fibre de carbone', ['comp-syn'], 'Résine époxyde (matrice) + fils de carbone tissés (renfort).']];
+const LBL = {}; BINS.forEach(b => b.s.forEach(([k, n]) => LBL[k] = `${b.n} › ${n.toLowerCase()}`));
+let order = [], idx = 0, ok = 0, done = false;
+BINS.forEach(b => {
+  const d = document.createElement('div'); d.className = 'bin'; d.style.setProperty('--f', `var(--${b.f})`);
+  d.innerHTML = `<h4>${b.n}</h4>`;
+  b.s.forEach(([k, n]) => { const bt = document.createElement('button'); bt.type = 'button'; bt.dataset.k = k; bt.textContent = n; bt.onclick = () => answer(k, bt); d.appendChild(bt); });
+  $('bins').appendChild(d);
+});
+function shuffle(a){ for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function startSort(){ order = shuffle(MATS.map((_, i) => i)); idx = 0; ok = 0; showMat(); }
+function showMat(){
+  done = false; $('s-next').hidden = true;
+  $('bins').querySelectorAll('button').forEach(b => { b.disabled = false; b.className = ''; });
+  if (idx >= order.length) {
+    $('s-mat').textContent = `${ok} / ${order.length}`; $('s-sub').textContent = ok === order.length ? 'Parfait, tout est bien rangé !' : 'Recommence pour viser le sans-faute.';
+    $('s-fb').className = 'fbk'; $('s-fb').textContent = 'Partie terminée.'; $('bins').querySelectorAll('button').forEach(b => b.disabled = true);
+  } else { $('s-mat').textContent = MATS[order[idx]][0]; $('s-sub').textContent = ''; $('s-fb').className = 'fbk'; $('s-fb').textContent = 'Clique sur une sous-catégorie.'; }
+  $('s-count').textContent = `Matériau ${Math.min(idx + 1, order.length)} / ${order.length}`;
+  $('s-score').textContent = `Bonnes réponses : ${ok}`;
+  $('s-prog').style.width = (idx / order.length * 100) + '%';
+}
+function answer(k, bt){
+  if (done || idx >= order.length) return; done = true;
+  const [name, good, why] = MATS[order[idx]];
+  const right = good.includes(k);
+  if (right) ok++;
+  $('bins').querySelectorAll('button').forEach(b => { b.disabled = true; if (good.includes(b.dataset.k)) b.classList.add(right && b === bt ? 'ok' : 'hint'); });
+  if (!right) bt.classList.add('ko'); else bt.classList.add('ok');
+  $('s-fb').className = 'fbk ' + (right ? 'ok' : 'ko');
+  $('s-fb').innerHTML = `<b>${right ? '✓ Oui' : '✗ Non'}</b> : ${name} → ${good.map(g => LBL[g]).join(' ou ')}. ${why}`;
+  $('s-score').textContent = `Bonnes réponses : ${ok}`;
+  $('s-next').hidden = false; $('s-next').focus({ preventScroll: true });
+}
+$('s-next').onclick = () => { idx++; showMat(); };
+$('s-restart').onclick = startSort;
+startSort();
+
+/* ================= SYMBOLES ================= */
+const SYM = [['C', 'Carbone', 'org'], ['H', 'Hydrogène', 'org'], ['O', 'Oxygène', 'org'], ['N', 'Azote', 'org'], ['PVC', 'Polychlorure de vinyle', 'org'], ['PMMA', 'Polyméthacrylate de méthyle (Plexiglas)', 'org'],
+  ['Cu', 'Cuivre', 'met'], ['Fe', 'Fer', 'met'], ['Al', 'Aluminium', 'met'], ['Sn', 'Étain', 'met'], ['Zn', 'Zinc', 'met'], ['PbO', 'Oxyde de plomb (dans le cristal)', 'min']];
+SYM.forEach(([s, n, f]) => {
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'flip'; b.style.setProperty('--f', `var(--${f})`);
+  b.setAttribute('aria-label', `${s} : retourner la carte`);
+  b.innerHTML = `<div class="in"><div class="fa"><small>${f === 'org' ? 'organique' : f === 'met' ? 'métal' : 'minéral'}</small>${s}</div><div class="fb">${n}</div></div>`;
+  b.onclick = () => b.classList.toggle('on'); $('flips').appendChild(b);
+});
+$('flip-all').onclick = () => { const all = [...$('flips').children]; const on = !all.every(c => c.classList.contains('on')); all.forEach(c => c.classList.toggle('on', on)); };
+
+/* ================= RÉCAP ================= */
+const RECAP = [
+  ['org', 'Organiques', [['Naturels', 'Issus du vivant (animal ou végétal), surtout C, H, O', 'bois, coton, laine, galalithe'], ['Synthétiques', 'Créés par polymérisation, souvent pétrosourcés', 'PVC, PMMA (Plexiglas), Nylon']], 'Structure basée sur l\'atome de carbone'],
+  ['met', 'Métaux', [['Purs', 'Un seul type d\'atome métallique', 'cuivre Cu, fer Fe, aluminium Al'], ['Alliages', 'Mélange homogène de métaux, ou d\'un métal et d\'un non-métal', 'acier (Fe + C), bronze (Cu + Sn), laiton (Cu + Zn)']], 'Liaison métallique, mer d\'électrons, cristallins'],
+  ['min', 'Minéraux', [['Roches', 'Extraites et taillées, sans transformation chimique lourde', 'granit, marbre, calcaire, ardoise, basalte'], ['Céramiques', 'Cristallines, cuisson d\'argiles et de silicates', 'grès, porcelaine, faïence'], ['Verres', 'Amorphes, silice fondue à 1 500 °C puis refroidie très vite', 'verre minéral, cristal (+ PbO)']], 'Origine géologique, durs, rigides, fragiles'],
+  ['comp', 'Composites', [['Naturels', 'Matrice + renfort à l\'échelle microscopique, dans le vivant', 'bois (lignine + cellulose), os (collagène + phosphate de calcium)'], ['Synthétiques', 'Matrice + renfort façonnés par l\'Homme', 'torchis, béton armé, fibre de carbone']], 'Hétérogènes : matrice (liant) + renfort (armature)']];
+let train = false;
+function drawRecap(){
+  const tb = $('rtbl').querySelector('tbody'); tb.innerHTML = '';
+  RECAP.forEach(([f, n, subs, gen]) => subs.forEach((s, i) => {
+    const tr = document.createElement('tr'); tr.style.setProperty('--f', `var(--${f})`); if (i === 0) tr.className = 'first';
+    if (i === 0) { const td = document.createElement('td'); td.className = 'fam'; td.rowSpan = subs.length; td.innerHTML = `${n}<div class="small muted" style="font-family:var(--f-body);font-weight:400;font-size:13px;white-space:normal;max-width:180px">${gen}</div>`; tr.appendChild(td); }
+    const cell = (txt, cls, hide) => { const td = document.createElement('td'); td.className = cls || '';
+      if (train && hide) { const b = document.createElement('button'); b.type = 'button'; b.className = 'reveal'; b.textContent = '?'; b.setAttribute('aria-label', 'Révéler'); b.onclick = () => td.textContent = txt; td.appendChild(b); } else td.textContent = txt; return td; };
+    tr.append(cell(s[0], 'sc'), cell(s[1], '', true), cell(s[2], '', true)); tb.appendChild(tr);
+  }));
+}
+$('r-train').onclick = () => { train = !train; $('r-train').textContent = train ? 'Quitter le mode entraînement' : 'Mode entraînement : cacher les réponses'; $('r-all').hidden = !train; drawRecap(); };
+$('r-all').onclick = () => $('rtbl').querySelectorAll('.reveal').forEach(b => b.click());
+drawRecap();
+
+/* ================= QUIZ ================= */
+const Q = [
+  ['Sur quel atome repose la structure des matériaux organiques ?', ['Le fer','Le carbone','Le silicium','L\'oxygène'], 1, 'Les organiques sont construits autour de l\'atome de carbone C.'],
+  ['Comment appelle-t-on la réaction qui fabrique les organiques synthétiques ?', ['La fusion','La cuisson','La polymérisation','L\'alliage'], 2, 'Des monomères s\'enchaînent pour former un polymère.'],
+  ['Le PMMA (Plexiglas) est…', ['un verre','un organique synthétique','une céramique','un composite'], 1, 'Transparent, mais c\'est un plastique pétrosourcé.'],
+  ['Qu\'est-ce que la « mer d\'électrons » ?', ['Des électrons qui circulent librement entre les atomes d\'un métal','L\'eau contenue dans le bois','Le désordre des atomes du verre','La matrice d\'un composite'], 0, 'C\'est la liaison métallique, qui explique la conduction électrique.'],
+  ['L\'acier est un alliage de…', ['cuivre et étain','cuivre et zinc','fer et carbone','fer et aluminium'], 2, 'Fe + C : un métal et un non-métal.'],
+  ['Le laiton est un alliage de…', ['cuivre et zinc','cuivre et étain','fer et carbone','plomb et oxygène'], 0, 'Cu + Zn. Le bronze, lui, c\'est Cu + Sn.'],
+  ['Le symbole Sn désigne…', ['le soufre','l\'étain','le sodium','le zinc'], 1, 'Sn = étain (du latin stannum).'],
+  ['Quelle propriété décrit le mieux les minéraux ?', ['Souples et légers','Durs et rigides mais fragiles','Conducteurs d\'électricité','Faciles à plier'], 1, 'Ils cassent sans se déformer.'],
+  ['Pourquoi le verre est-il amorphe ?', ['Il est cuit lentement','Il est refroidi très vite après fusion','Il contient du carbone','Il est taillé dans la roche'], 1, 'Les atomes n\'ont pas le temps de se ranger : ils restent en désordre.'],
+  ['Le cristal (verre enrichi en PbO) est…', ['cristallin','amorphe','un métal','une céramique'], 1, 'Malgré son nom, c\'est un verre, donc amorphe.'],
+  ['La porcelaine est une…', ['roche','céramique','verre','composite'], 1, 'Argile cuite à haute température : céramique cristalline.'],
+  ['Dans le béton armé, quel est le renfort ?', ['Le béton','Les barres d\'acier','Le sable','L\'eau'], 1, 'Le béton est la matrice (le liant), l\'acier est le renfort.'],
+  ['Dans le bois, quel constituant résiste à la traction ?', ['La lignine','Les fibres de cellulose','La résine','Le collagène'], 1, 'La lignine (matrice) résiste à la compression, la cellulose (renfort) à la traction.'],
+  ['Le torchis associe…', ['béton + acier','argile + paille','résine + carbone','collagène + phosphate'], 1, 'Composite synthétique historique des maisons à colombages.']];
+let qa = 0, qg = 0;
+function score(){ $('q-score').textContent = `Score : ${qg} / ${qa}` + (qa === Q.length ? ` · terminé (${Math.round(qg / Q.length * 20)}/20)` : ` · ${Q.length - qa} restante(s)`); }
+function drawQuiz(){
+  qa = 0; qg = 0; $('q-list').innerHTML = '';
+  Q.forEach((q, qi) => {
+    const box = document.createElement('div'); box.className = 'q';
+    box.innerHTML = `<p class="qt"><span>${String(qi + 1).padStart(2, '0')}</span>${q[0]}</p><div class="opts"></div><p class="expl" hidden></p>`;
+    const o = box.querySelector('.opts');
+    q[1].forEach((t, oi) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
+      b.onclick = () => { o.querySelectorAll('button').forEach((x, k) => { x.disabled = true; if (k === q[2]) x.classList.add('ok'); }); if (oi !== q[2]) b.classList.add('ko'); else qg++; qa++;
+        const e = box.querySelector('.expl'); e.hidden = false; e.textContent = (oi === q[2] ? '✓ Bravo. ' : '✗ Raté. ') + q[3]; score(); };
+      o.appendChild(b); });
+    $('q-list').appendChild(box);
+  });
+  score();
+}
+$('q-reset').onclick = drawQuiz; drawQuiz();
+</script>
+
+</body></html>
